@@ -1,0 +1,141 @@
+mixed-port: 7890
+allow-lan: true
+bind-address: '*'
+mode: rule
+log-level: info
+external-controller: '127.0.0.1:9090'
+unified-delay: true
+tcp-concurrent: true
+dns:
+  enable: true
+  respect-rules: true
+  ipv6: true
+  prefer-h3: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver:
+    - 1.1.1.1
+    - 8.8.8.8
+    - 2606:4700:4700::1111
+    - 2606:4700:4700::1001
+  nameserver:
+    - https://dns.cloudflare.com/dns-query
+    - https://dns.google/dns-query
+    - https://dns.quad9.net/dns-query
+  proxy-server-nameserver:
+    - https://dns.google/dns-query
+  direct-nameserver:
+    - 1.1.1.1
+    - 8.8.8.8
+  fallback:
+    - https://dns.cloudflare.com/dns-query
+    - https://dns.google/dns-query
+    - https://dns.quad9.net/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+  fake-ip-filter:
+    - '*.lan'
+    - '*.local'
+    - '*.msftconnecttest.com'
+    - '*.msftncsi.com'
+    - stun.*
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+#-------------------#
+#以下加订阅节点proxies: 段。#
+
+  
+proxy-groups:
+
+  - name: 🌍 全部节点
+    type: select
+    include-all: true
+
+  - name: 🇺🇸 美国自动
+    type: url-test
+    include-all: true
+    filter: '(?i)(美国|USA|United States|LosAngeles|SanJose|Seattle|Chicago|New York)'
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+rules:
+  - RULE-SET,Advertising,REJECT
+  - RULE-SET,Privacy,REJECT
+  - RULE-SET,ChinaMax,DIRECT
+
+  - DOMAIN-SUFFIX,github.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,githubusercontent.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,githubassets.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,raw.githubusercontent.com,🇺🇸 美国自动
+  #局域网与电子邮件设置
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - GEOIP,LAN,DIRECT,no-resolve
+  - DST-PORT,465,DIRECT
+  - DST-PORT,587,DIRECT
+  - DST-PORT,993,DIRECT
+  - DST-PORT,995,DIRECT
+  #自定义规则（优先级最高）
+  #微软分流
+  - DOMAIN-KEYWORD,copilot,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,bing.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,bingapis.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,designer.microsoft.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,copilot.microsoft.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,ai.microsoft.com,🇺🇸 美国自动
+  - DOMAIN,officeapps.live.com,🇺🇸 美国自动
+  - DOMAIN,onedrive.live.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,1drv.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,sharepoint.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,office.net,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,office365.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,spoprod-a.akamaihd.net,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,mp.microsoft.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,xboxlive.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,storeedgefd.dsx.mp.microsoft.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,displaycatalog.mp.microsoft.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,assets1.xboxlive.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,login.live.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,login.microsoftonline.com,🇺🇸 美国自动
+  - DOMAIN-SUFFIX,account.live.com,🇺🇸 美国自动
+  - DOMAIN,storage.live.com,DIRECT
+  - DOMAIN-KEYWORD,skyapi,DIRECT
+  - DOMAIN-SUFFIX,onedrive.com,DIRECT
+  - DOMAIN-SUFFIX,outlook.com,DIRECT
+  - DOMAIN-SUFFIX,office.com,DIRECT
+  - DOMAIN-SUFFIX,msauth.net,DIRECT
+  #抖音分流（美国组）
+  - DOMAIN-KEYWORD,snssdk,🇺🇸 美国自动
+  - DOMAIN-KEYWORD,amemv,🇺🇸 美国自动
+  - DOMAIN-KEYWORD,douyin,🇺🇸 美国自动
+  - DOMAIN-KEYWORD,byteimg,🇺🇸 美国自动
+  - DOMAIN-KEYWORD,pstatp,🇺🇸 美国自动
+  - DOMAIN-KEYWORD,bytedance,🇺🇸 美国自动
+  #兜底策略
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT,no-resolve
+  - MATCH,🇺🇸 美国自动
+rule-providers:
+  ChinaMax:
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMax/ChinaMax_Domain.yaml
+  Advertising:
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising_Domain.yaml
+  Privacy:
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Privacy/Privacy_Domain.yaml
