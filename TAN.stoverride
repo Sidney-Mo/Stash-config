@@ -67,7 +67,7 @@ proxy-groups: #!replace
   - name: 🇺🇸 USA_Primary
     type: url-test
     include-all: true
-    filter: '(?i)(\\[US\\]|^US$|USA|United States|[US]|美国)'
+    filter: '(?i)(\\[US\\]|^US$|USA|United States|US|美国)'
     url: http://www.gstatic.com/generate_204
     interval: 300
     tolerance: 50
