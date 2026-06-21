@@ -90,7 +90,7 @@ rules: #!replace
   - DST-PORT,587,DIRECT
   - DST-PORT,993,DIRECT
   - DST-PORT,995,DIRECT
-rules:
+
   # --- Apple ---
   # Basic connection and time
   - DOMAIN,time.apple.com,DIRECT
