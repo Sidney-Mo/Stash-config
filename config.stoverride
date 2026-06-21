@@ -73,7 +73,7 @@ proxy-groups: #!replace
     tolerance: 50
 
 rules: #!replace
-  #抖音分流（美国组）
+  #Tiktok
   - DOMAIN-KEYWORD,snssdk,🇺🇸 美国自动
   - DOMAIN-KEYWORD,amemv,🇺🇸 美国自动
   - DOMAIN-KEYWORD,douyin,🇺🇸 美国自动
@@ -86,7 +86,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,githubassets.com,🇺🇸 美国自动
   - DOMAIN-SUFFIX,raw.githubusercontent.com,🇺🇸 美国自动
 
-  #局域网与电子邮件设置
+  #局域网与电子邮件
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
   - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
@@ -97,7 +97,7 @@ rules: #!replace
   - DST-PORT,993,DIRECT
   - DST-PORT,995,DIRECT
 
-  #自定义规则（优先级最高）
+  #自定义规则
   #微软分流
   - DOMAIN-KEYWORD,copilot,🇺🇸 美国自动
   - DOMAIN-SUFFIX,bing.com,🇺🇸 美国自动
