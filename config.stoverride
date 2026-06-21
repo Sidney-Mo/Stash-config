@@ -1,3 +1,15 @@
+name: Sidney Override
+
+desc: |-
+
+  Personal Stash Override
+
+  DNS · Proxy Groups · Rules
+
+author: Sidney
+
+version: 1.0
+
 #!override
 
 mixed-port: 7890
