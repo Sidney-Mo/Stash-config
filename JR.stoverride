@@ -73,6 +73,8 @@ proxy-groups: #!replace
   - name: 🌐 All nodes
     type: select
     include-all: true
+    udp: true
+
 
   - name: 🇺🇸 USA_Primary
     type: url-test
@@ -81,6 +83,8 @@ proxy-groups: #!replace
     url: http://www.gstatic.com/generate_204
     interval: 300
     tolerance: 50
+    udp: true
+
 
 rules: #!replace
 
