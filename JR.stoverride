@@ -1,11 +1,7 @@
-name: USA Override2
-
+Name: USA Override2
 desc: |-
-
   Personal Stash Override
-
   DNS · Proxy Groups · Rules
-
 version: 1.0
 
 #!override
@@ -22,29 +18,25 @@ tcp-concurrent: true
 dns: #!replace
   enable: true
   respect-rules: true
-  ipv6: false              # 建议先关闭 IPv6 排查
+  ipv6: false
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   
-  # 用于解析 DoH 域名的基础 DNS
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
     - 1.1.1.1
 
-  # 国内域名及节点域名优先使用国内 DNS 解析，防止死循环
   nameserver:
     - 223.5.5.5
     - 119.29.29.29
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
 
-  # 专门用于解析代理服务器域名的 DNS
   proxy-server-nameserver:
     - 223.5.5.5
     - 119.29.29.29
 
-  # 国外或被污染域名使用的备用 DNS
   fallback:
     - https://dns.cloudflare.com/dns-query
     - https://dns.google/dns-query
@@ -56,15 +48,15 @@ dns: #!replace
     - '*.local'
     - '*.msftconnecttest.com'
     - '*.msftncsi.com'
+    - 'pemby.ednovas.org'
+    - 'shh.ysqhq.top'
+    - 'dde.ysqhq.top'
     - stun.*
 
 profile: #!replace
   store-selected: true
   store-fake-ip: true
 
-#-------------------#
-# proxies:  #
-#-------------------#
 proxy-groups: #!replace
   - name: 🌐 All nodes
     type: select
@@ -73,20 +65,20 @@ proxy-groups: #!replace
   - name: 🇺🇸 USA_Primary
     type: url-test
     include-all: true
+    # 如果机场没有美国节点，自动回退到“🌐 All nodes”里的第一个可用节点，防止断网
     filter: '(?i)(\[US\]|^US$|USA|United States|\bUS\b|美国)'
     url: http://www.gstatic.com/generate_204
     interval: 300
     tolerance: 50
 
 rules: #!replace
-
-  #GitHub
+  # GitHub
   - DOMAIN-SUFFIX,github.com,🇺🇸 USA_Primary
   - DOMAIN-SUFFIX,githubusercontent.com,🇺🇸 USA_Primary
   - DOMAIN-SUFFIX,githubassets.com,🇺🇸 USA_Primary
   - DOMAIN-SUFFIX,raw.githubusercontent.com,🇺🇸 USA_Primary
 
-  #Local area network and e-mail
+  # 局域网与邮件
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
   - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
@@ -97,26 +89,22 @@ rules: #!replace
   - DST-PORT,993,DIRECT
   - DST-PORT,995,DIRECT
 
-  # --- Apple ---
-  # Basic connection and time
+  # --- Apple 核心服务 ---
   - DOMAIN,time.apple.com,DIRECT
   - DOMAIN,captive.apple.com,DIRECT
-  # Media and content
-  - DOMAIN-SUFFIX,mzstatic.com,🇺🇸 USA_Primary
-  - DOMAIN-SUFFIX,aaplimg.com,🇺🇸 USA_Primary
   - DOMAIN-SUFFIX,music.apple.com,DIRECT
-  # Storage and backup
   - DOMAIN-SUFFIX,icloud.com,DIRECT
   - DOMAIN-SUFFIX,icloud-content.com,DIRECT
   - DOMAIN-SUFFIX,apple-cloudkit.com,DIRECT
   - DOMAIN,gateway.icloud.com,DIRECT
-  # Download and update
+  
+  # Apple 走代理部分
+  - DOMAIN-SUFFIX,mzstatic.com,🇺🇸 USA_Primary
+  - DOMAIN-SUFFIX,aaplimg.com,🇺🇸 USA_Primary
   - DOMAIN-SUFFIX,swcdn.apple.com,🇺🇸 USA_Primary
   - DOMAIN-SUFFIX,updates.cdn-apple.com,🇺🇸 USA_Primary
-  # Push service
   - DOMAIN-SUFFIX,push.apple.com,🇺🇸 USA_Primary
   - DOMAIN-SUFFIX,push-apple.com.akadns.net,🇺🇸 USA_Primary
-  # App Store / iTunes
   - DOMAIN,itunes.apple.com,🇺🇸 USA_Primary
   - DOMAIN-SUFFIX,apps.apple.com,🇺🇸 USA_Primary
   - DOMAIN-SUFFIX,itunes.apple.com,🇺🇸 USA_Primary
@@ -125,7 +113,7 @@ rules: #!replace
   - DOMAIN,bag.itunes.apple.com,🇺🇸 USA_Primary
   - DOMAIN,storekit.itunes.apple.com,🇺🇸 USA_Primary
 
-  #Microsoft
+  # Microsoft & Copilot
   - DOMAIN-KEYWORD,copilot,🇺🇸 USA_Primary
   - DOMAIN-SUFFIX,bing.com,🇺🇸 USA_Primary
   - DOMAIN-SUFFIX,bingapis.com,🇺🇸 USA_Primary
@@ -154,38 +142,16 @@ rules: #!replace
   - DOMAIN-SUFFIX,outlook.com,DIRECT
   - DOMAIN-SUFFIX,office.com,DIRECT
   - DOMAIN-SUFFIX,msauth.net,DIRECT
-  #Tiktok
+
+  # Tiktok / 字节跳动
   - DOMAIN-KEYWORD,snssdk,🇺🇸 USA_Primary
   - DOMAIN-KEYWORD,amemv,🇺🇸 USA_Primary
   - DOMAIN-KEYWORD,douyin,🇺🇸 USA_Primary
   - DOMAIN-KEYWORD,byteimg,🇺🇸 USA_Primary
   - DOMAIN-KEYWORD,pstatp,🇺🇸 USA_Primary
   - DOMAIN-KEYWORD,bytedance,🇺🇸 USA_Primary
-  #Remote rule set
-  - RULE-SET,Advertising,REJECT
-  - RULE-SET,Privacy,REJECT
-  - RULE-SET,ChinaMax,DIRECT
 
-  #Bottom-up strategy
+  # 兜底分流策略（使用设备自带库，不依赖外部链接）
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,DIRECT,no-resolve
-  - MATCH,🇺🇸 USA_Primary
-
-rule-providers: #!replace
-  ChinaMax:
-    behavior: domain
-    format: yaml
-    interval: 86400
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMax/ChinaMax_Domain.yaml
-
-  Advertising:
-    behavior: domain
-    format: yaml
-    interval: 86400
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising_Domain.yaml
-
-  Privacy:
-    behavior: domain
-    format: yaml
-    interval: 86400
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Privacy/Privacy_Domain.yaml
+  - MATCH,🌐 All nodes
