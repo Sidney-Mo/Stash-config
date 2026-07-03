@@ -1,7 +1,6 @@
 name: Stash Ednovas Override
 desc: |-
- 【DNS · Proxy Groups · Rules】
-
+  DNS · Proxy Groups · Rules
   Encrypted DNS:
      DoH (DoH-CN) IPv6/IPv4
   Policy Groups:
