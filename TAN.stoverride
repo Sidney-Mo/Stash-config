@@ -1,4 +1,4 @@
-name: USA TAN Override
+name: USA Override
 
 desc: |-
 
@@ -31,8 +31,8 @@ dns: #!replace
     - 223.5.5.5
     - 1.1.1.1
     - 8.8.8.8
-    - 2606:4700:4700::1111
-    - 2606:4700:4700::1001
+    - 9.9.9.9
+
 
   nameserver:
     - https://edge.microsoft.com/dns-query
@@ -44,9 +44,7 @@ dns: #!replace
     - https://edge.microsoft.com/dns-query
     - https://dns.google/dns-query
     - https://dns.cloudflare.com/dns-query
-    - 233.5.5.5
-    - 4.2.2.1
-
+    - 223.5.5.5
 
   direct-nameserver: {}
 
