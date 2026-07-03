@@ -42,6 +42,10 @@ dns: #!replace
     - https://dns.quad9.net/dns-query
     - https://dns.alidns.com/dns-query
 
+  nameserver-policy:
+    '*.ednovas.org': https://dns.alidns.com/dns-query
+    '*.ysqhq.top': https://dns.alidns.com/dns-query
+
   proxy-server-nameserver:
     - https://edge.microsoft.com/dns-query
     - https://dns.google/dns-query
