@@ -47,10 +47,13 @@ dns: #!replace
   nameserver-policy:
     "*.weixin.com,*.wechat.com,*.qq.com,*.tencent.com":
       - 223.5.5.5
+      - 223.6.6.6
     "*.meituan.com,*.meituan.net,*.dpfile.com,*.dianping.com":
       - 223.5.5.5
+      - 223.6.6.6
     "*.ele.me,*.elemecdn.com":
       - 223.5.5.5
+      - 223.6.6.6
     "dns.quad9.net,dns.mullvad.net":
       - 223.5.5.5
 
