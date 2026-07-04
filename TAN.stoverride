@@ -199,6 +199,23 @@ rules: #!replace
   - DOMAIN-KEYWORD,byteimg,Proxy-Gate
   - DOMAIN-KEYWORD,pstatp,Proxy-Gate
   - DOMAIN-KEYWORD,bytedance,Proxy-Gate
+  # WeChat
+  - DOMAIN-SUFFIX,weixin.com,DIRECT
+  - DOMAIN-SUFFIX,wechat.com,DIRECT
+  - DOMAIN-SUFFIX,qq.com,DIRECT
+  - DOMAIN-SUFFIX,tencent.com,DIRECT
+  # Meituan
+  - DOMAIN-SUFFIX,meituan.com,DIRECT
+  - DOMAIN-SUFFIX,meituan.net,DIRECT
+  - DOMAIN-SUFFIX,dpfile.com,DIRECT
+  - DOMAIN-SUFFIX,dianping.com,DIRECT
+  # Eleme
+  - DOMAIN-SUFFIX,ele.me,DIRECT
+  - DOMAIN-SUFFIX,elemecdn.com,DIRECT
+  # Kugou
+  - DOMAIN-SUFFIX,kugou.com,DIRECT
+  - DOMAIN-SUFFIX,kgimg.com,DIRECT
+
   #Remote rule set
   - RULE-SET,Privacy,REJECT
   - RULE-SET,ChinaMax,DIRECT
