@@ -68,6 +68,20 @@ dns: #!replace
     ipcidr:
       - 240.0.0.0/4
 
+  nameserver-policy:
+    "*.weixin.com,*.wechat.com,*.qq.com,*.tencent.com":
+      - https://223.5.5.5/dns-query
+      - https://223.6.6.6/dns-query
+
+    "*.meituan.com,*.meituan.net,*.dpfile.com,*.dianping.com":
+      - https://223.5.5.5/dns-query
+      - https://223.6.6.6/dns-query
+
+    "*.ele.me,*.elemecdn.com":
+      - https://223.5.5.5/dns-query
+      - https://223.6.6.6/dns-query
+
+
   fake-ip-filter:
     - '*.lan'
     - '*.local'
