@@ -1,12 +1,16 @@
-name: USA SG
+name: Stash Override JR
 
 desc: |-
+  [[DNS · Proxy Groups · Rules]]
 
-  Personal Stash Override
+  Encrypted DNS:
+   - DoH IPv6/IPv4
+  Policy Groups:
+   - Proxy-Gate {USA/SG/Custom-Gate}
+  Rules:
+   - CN / Global
 
-  DNS · Proxy Groups · Rules
-
-version: 2.0
+version: 1.0/03-07-2026
 
 #!override
 
@@ -34,6 +38,7 @@ dns: #!replace
     - 1.1.1.1
     - 8.8.8.8
     - 9.9.9.9
+    - '[2400:3200::1]'
 
   nameserver:
     - https://edge.microsoft.com/dns-query
@@ -46,7 +51,6 @@ dns: #!replace
     - https://dns.google/dns-query
     - https://dns.cloudflare.com/dns-query
     - https://dns.alidns.com/dns-query
-    - 223.5.5.5
 
   direct-nameserver: {}
 
@@ -86,7 +90,7 @@ proxy-groups: #!replace
     proxies:
       - 🇺🇸 USA_Auto
       - 🇸🇬 SG_Auto
-      - Custom-Gate
+      - 🌐 Custom-Gateg
       - DIRECT
 
   - name: 🇺🇸 USA_Auto
@@ -107,7 +111,7 @@ proxy-groups: #!replace
     interval: 300
     tolerance: 50
 
-  - name: Custom-Gate
+  - name: 🌐 Custom-Gateg
     type: select
     include-all: true
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png
