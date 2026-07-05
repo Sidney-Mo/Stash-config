@@ -8,7 +8,7 @@ desc: |-
   Policy Groups:
    - Proxy-Gate {USA/SG/Custom-Gate}
   Rules:
-   - CN / Global
+   - CN / Global / Customize
 
 #!override
 
