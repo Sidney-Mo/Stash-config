@@ -5,7 +5,7 @@ desc: |-
   DNS｜Proxy Groups｜Rules
   Version: 1.0｜2026-07-07
   Encrypted DNS:
-   - DoH｜IPv6｜IPv4
+   - DoH(DoT)｜IPv6｜IPv4
   Policy Groups:
    - PROXY-Gate {Custom-Gate/US/SG/HK/JP}
   Rules:
