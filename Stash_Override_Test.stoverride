@@ -44,7 +44,6 @@ dns: #!replace
     - https://dns.quad9.net/dns-query
 
   proxy-server-nameserver:
-    - 223.5.5.5
     - https://1.1.1.1/dns-query
     - https://8.8.8.8/dns-query
     - tls://1.1.1.1:853
