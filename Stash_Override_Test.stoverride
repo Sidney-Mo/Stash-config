@@ -33,13 +33,6 @@ dns: #!replace
     - 223.5.5.5
 
   nameserver:
-    - https://1.1.1.1/dns-query
-    - https://8.8.8.8/dns-query
-    - tls://1.1.1.1:853
-    - tls://8.8.8.8:853
-    - tls://1.0.0.1:853
-    - tls://8.8.4.4:853
-    - tls://9.9.9.9:853
     - https://dns.cloudflare.com/dns-query
     - https://dns.google/dns-query
     - https://dns.quad9.net/dns-query
@@ -61,6 +54,15 @@ dns: #!replace
     - https://doh.pub/dns-query
 
   nameserver-policy:
+    #Cecilia
+    '+.t11-a.app':
+      - https://1.1.1.1/dns-query
+      - tls://8.8.8.8:853
+      - tls://1.0.0.1:853
+    '+.t202511-n.icu':
+      - https://1.1.1.1/dns-query
+      - tls://8.8.8.8:853
+      - tls://1.0.0.1:853
     #WeChat
     '+.weixin.com': [https://dns.alidns.com/dns-query]
     '+.wechat.com': [https://dns.alidns.com/dns-query]
