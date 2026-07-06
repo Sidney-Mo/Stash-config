@@ -1,14 +1,14 @@
 name: Stash Beta
 
 desc: |-
-  Stash Override Beta Version
-  DNS · Proxy Groups · Rules
+  DNS｜Proxy Groups｜Rules
+  Version: 1.1｜07-05-2026
   Encrypted DNS:
-   - DoH IPv6/IPv4
+   - DoH/IPv6/IPv4
   Policy Groups:
-   - Proxy-Gate {USA/SG/Custom-Gate}
+   - PROXY-Gate {Custom-Gate/US/SG/HK/JP}
   Rules:
-   - CN / Global
+   - Global / Customize / CN
 
 #!override
 
@@ -39,20 +39,48 @@ dns: #!replace
     - '[2400:3200::1]'
 
   nameserver:
-    - https://edge.microsoft.com/dns-query
     - https://dns.cloudflare.com/dns-query
     - https://dns.google/dns-query
     - https://dns.quad9.net/dns-query
 
   proxy-server-nameserver:
-    - https://edge.microsoft.com/dns-query
-    - https://dns.cloudflare.com/dns-query
-    - https://dns.google/dns-query
     - https://dns.alidns.com/dns-query
+    - https://1.1.1.1/dns-query
+    - https://8.8.8.8/dns-query
+    - tls://1.1.1.1:853
+    - tls://8.8.8.8:853
+    - tls://1.0.0.1:853
+    - tls://8.8.4.4:853
+    - tls://9.9.9.9:853
 
   direct-nameserver:
-    - 223.5.5.5
-    - 223.6.6.6
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+
+  nameserver-policy:
+    #WeChat
+    '+.weixin.com': [https://dns.alidns.com/dns-query]
+    '+.wechat.com': [https://dns.alidns.com/dns-query]
+    '+.qq.com': [https://dns.alidns.com/dns-query]
+    '+.tencent.com': [https://dns.alidns.com/dns-query]
+    '+.qpic.cn': [https://dns.alidns.com/dns-query]
+    '+.wx.qq.com': [https://dns.alidns.com/dns-query]
+    '+.wxapp.qq.com': [https://dns.alidns.com/dns-query]
+    #MeiTuan
+    '+.meituan.com': [https://dns.alidns.com/dns-query]
+    '+.meituan.net': [https://dns.alidns.com/dns-query]
+    '+.sankuai.com': [https://dns.alidns.com/dns-query]
+    '+.meituanwaimai.com': [https://dns.alidns.com/dns-query]
+    '+.meituanzhongbao.com': [https://dns.alidns.com/dns-query]
+    #KuGou
+    '+.kugou.com': [https://dns.alidns.com/dns-query]
+    '+.kugou.net': [https://dns.alidns.com/dns-query]
+    '+.kgimg.com': [https://dns.alidns.com/dns-query]
+    '+.kglink.cn': [https://dns.alidns.com/dns-query]
+    '+.kugouaudio.com': [https://dns.alidns.com/dns-query]
+    '+.kugoustore.com': [https://dns.alidns.com/dns-query]
+    '+.kugouvoice.com': [https://dns.alidns.com/dns-query]
+    '+.kugouyouth.com': [https://dns.alidns.com/dns-query]
 
   fallback:
     - https://edge.microsoft.com/dns-query
@@ -81,16 +109,23 @@ profile: #!replace
 # proxies:  #
 #-------------------#
 proxy-groups: #!replace
-  - name: Proxy-Gate
+  - name: PROXY-Gate
     type: select
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Final.png
     proxies:
-      - 🇺🇸 USA_Auto
-      - 🇸🇬 SG_Auto
       - 🌐 Custom-Gateg
+      - 🇺🇸 US-Auto
+      - 🇸🇬 SG-Auto
+      - 🇭🇰 HK-Auto
+      - 🇯🇵 JP-Auto
       - DIRECT
 
-  - name: 🇺🇸 USA_Auto
+  - name: 🌐 Custom-Gateg
+    type: select
+    include-all: true
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png
+
+  - name: 🇺🇸 US-Auto
     type: url-test
     include-all: true
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png
@@ -99,7 +134,7 @@ proxy-groups: #!replace
     interval: 300
     tolerance: 50
 
-  - name: 🇸🇬 SG_Auto
+  - name: 🇸🇬 SG-Auto
     type: url-test
     include-all: true
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png
@@ -108,18 +143,31 @@ proxy-groups: #!replace
     interval: 300
     tolerance: 50
 
-  - name: 🌐 Custom-Gateg
-    type: select
+  - name: 🇭🇰 HK-Auto
+    type: url-test
     include-all: true
-    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png
+    filter: '(?i)(\[HK\]|^HK$|Hong Kong|\bHK\b|香港|🇨🇳香港)'
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: 🇯🇵 JP-Auto
+    type: url-test
+    include-all: true
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png
+    filter: '(?i)(\[JP\]|^JP$|Japan|\bJP\b|日本|东京|大阪|🇯🇵日本)'
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
 
 rules: #!replace
 
   #GitHub
-  - DOMAIN-SUFFIX,github.com,Proxy-Gate
-  - DOMAIN-SUFFIX,githubusercontent.com,Proxy-Gate
-  - DOMAIN-SUFFIX,githubassets.com,Proxy-Gate
-  - DOMAIN-SUFFIX,raw.githubusercontent.com,Proxy-Gate
+  - DOMAIN-SUFFIX,github.com,PROXY-Gate
+  - DOMAIN-SUFFIX,githubusercontent.com,PROXY-Gate
+  - DOMAIN-SUFFIX,githubassets.com,PROXY-Gate
+  - DOMAIN-SUFFIX,raw.githubusercontent.com,PROXY-Gate
 
   #Local area network and e-mail
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
@@ -132,14 +180,14 @@ rules: #!replace
   - DST-PORT,993,DIRECT
   - DST-PORT,995,DIRECT
 
-  #==================#
+  #=========Custom rules=========#
   # Apple
   # Basic connection and time
   - DOMAIN,time.apple.com,DIRECT
   - DOMAIN,captive.apple.com,DIRECT
   # Media and content
-  - DOMAIN-SUFFIX,mzstatic.com,Proxy-Gate
-  - DOMAIN-SUFFIX,aaplimg.com,Proxy-Gate
+  - DOMAIN-SUFFIX,mzstatic.com,PROXY-Gate
+  - DOMAIN-SUFFIX,aaplimg.com,PROXY-Gate
   - DOMAIN-SUFFIX,music.apple.com,DIRECT
   # Storage and backup
   - DOMAIN-SUFFIX,icloud.com,DIRECT
@@ -147,42 +195,42 @@ rules: #!replace
   - DOMAIN-SUFFIX,apple-cloudkit.com,DIRECT
   - DOMAIN,gateway.icloud.com,DIRECT
   # Download and update
-  - DOMAIN-SUFFIX,swcdn.apple.com,Proxy-Gate
-  - DOMAIN-SUFFIX,updates.cdn-apple.com,Proxy-Gate
+  - DOMAIN-SUFFIX,swcdn.apple.com,PROXY-Gate
+  - DOMAIN-SUFFIX,updates.cdn-apple.com,PROXY-Gate
   # Push service
-  - DOMAIN-SUFFIX,push.apple.com,Proxy-Gate
-  - DOMAIN-SUFFIX,push-apple.com.akadns.net,Proxy-Gate
+  - DOMAIN-SUFFIX,push.apple.com,PROXY-Gate
+  - DOMAIN-SUFFIX,push-apple.com.akadns.net,PROXY-Gate
   # App Store / iTunes
-  - DOMAIN,itunes.apple.com,Proxy-Gate
-  - DOMAIN-SUFFIX,apps.apple.com,Proxy-Gate
-  - DOMAIN-SUFFIX,itunes.apple.com,Proxy-Gate
-  - DOMAIN-SUFFIX,appstore.com,Proxy-Gate
-  - DOMAIN-KEYWORD,buy.itunes,Proxy-Gate
-  - DOMAIN,bag.itunes.apple.com,Proxy-Gate
-  - DOMAIN,storekit.itunes.apple.com,Proxy-Gate
+  - DOMAIN,itunes.apple.com,PROXY-Gate
+  - DOMAIN-SUFFIX,apps.apple.com,PROXY-Gate
+  - DOMAIN-SUFFIX,itunes.apple.com,PROXY-Gate
+  - DOMAIN-SUFFIX,appstore.com,PROXY-Gate
+  - DOMAIN-KEYWORD,buy.itunes,PROXY-Gate
+  - DOMAIN,bag.itunes.apple.com,PROXY-Gate
+  - DOMAIN,storekit.itunes.apple.com,PROXY-Gate
   #Microsoft
-  - DOMAIN-KEYWORD,copilot,Proxy-Gate
-  - DOMAIN-SUFFIX,bing.com,Proxy-Gate
-  - DOMAIN-SUFFIX,bingapis.com,Proxy-Gate
-  - DOMAIN-SUFFIX,designer.microsoft.com,Proxy-Gate
-  - DOMAIN-SUFFIX,copilot.microsoft.com,Proxy-Gate
-  - DOMAIN-SUFFIX,ai.microsoft.com,Proxy-Gate
-  - DOMAIN,officeapps.live.com,Proxy-Gate
-  - DOMAIN,onedrive.live.com,Proxy-Gate
-  - DOMAIN-SUFFIX,1drv.com,Proxy-Gate
-  - DOMAIN-SUFFIX,sharepoint.com,Proxy-Gate
-  - DOMAIN-SUFFIX,office.net,Proxy-Gate
-  - DOMAIN-SUFFIX,office365.com,Proxy-Gate
-  - DOMAIN-SUFFIX,spoprod-a.akamaihd.net,Proxy-Gate
-  - DOMAIN-SUFFIX,mp.microsoft.com,Proxy-Gate
-  - DOMAIN-SUFFIX,xboxlive.com,Proxy-Gate
-  - DOMAIN-SUFFIX,storeedgefd.dsx.mp.microsoft.com,Proxy-Gate
-  - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,Proxy-Gate
-  - DOMAIN-SUFFIX,displaycatalog.mp.microsoft.com,Proxy-Gate
-  - DOMAIN-SUFFIX,assets1.xboxlive.com,Proxy-Gate
-  - DOMAIN-SUFFIX,login.live.com,Proxy-Gate
-  - DOMAIN-SUFFIX,login.microsoftonline.com,Proxy-Gate
-  - DOMAIN-SUFFIX,account.live.com,Proxy-Gate
+  - DOMAIN-KEYWORD,copilot,PROXY-Gate
+  - DOMAIN-SUFFIX,bing.com,PROXY-Gate
+  - DOMAIN-SUFFIX,bingapis.com,PROXY-Gate
+  - DOMAIN-SUFFIX,designer.microsoft.com,PROXY-Gate
+  - DOMAIN-SUFFIX,copilot.microsoft.com,PROXY-Gate
+  - DOMAIN-SUFFIX,ai.microsoft.com,PROXY-Gate
+  - DOMAIN,officeapps.live.com,PROXY-Gate
+  - DOMAIN,onedrive.live.com,PROXY-Gate
+  - DOMAIN-SUFFIX,1drv.com,PROXY-Gate
+  - DOMAIN-SUFFIX,sharepoint.com,PROXY-Gate
+  - DOMAIN-SUFFIX,office.net,PROXY-Gate
+  - DOMAIN-SUFFIX,office365.com,PROXY-Gate
+  - DOMAIN-SUFFIX,spoprod-a.akamaihd.net,PROXY-Gate
+  - DOMAIN-SUFFIX,mp.microsoft.com,PROXY-Gate
+  - DOMAIN-SUFFIX,xboxlive.com,PROXY-Gate
+  - DOMAIN-SUFFIX,storeedgefd.dsx.mp.microsoft.com,PROXY-Gate
+  - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,PROXY-Gate
+  - DOMAIN-SUFFIX,displaycatalog.mp.microsoft.com,PROXY-Gate
+  - DOMAIN-SUFFIX,assets1.xboxlive.com,PROXY-Gate
+  - DOMAIN-SUFFIX,login.live.com,PROXY-Gate
+  - DOMAIN-SUFFIX,login.microsoftonline.com,PROXY-Gate
+  - DOMAIN-SUFFIX,account.live.com,PROXY-Gate
   - DOMAIN,storage.live.com,DIRECT
   - DOMAIN-KEYWORD,skyapi,DIRECT
   - DOMAIN-SUFFIX,onedrive.com,DIRECT
@@ -190,12 +238,12 @@ rules: #!replace
   - DOMAIN-SUFFIX,office.com,DIRECT
   - DOMAIN-SUFFIX,msauth.net,DIRECT
   #Tiktok
-  - DOMAIN-KEYWORD,snssdk,Proxy-Gate
-  - DOMAIN-KEYWORD,amemv,Proxy-Gate
-  - DOMAIN-KEYWORD,douyin,Proxy-Gate
-  - DOMAIN-KEYWORD,byteimg,Proxy-Gate
-  - DOMAIN-KEYWORD,pstatp,Proxy-Gate
-  - DOMAIN-KEYWORD,bytedance,Proxy-Gate
+  - DOMAIN-KEYWORD,snssdk,PROXY-Gate
+  - DOMAIN-KEYWORD,amemv,PROXY-Gate
+  - DOMAIN-KEYWORD,douyin,PROXY-Gate
+  - DOMAIN-KEYWORD,byteimg,PROXY-Gate
+  - DOMAIN-KEYWORD,pstatp,PROXY-Gate
+  - DOMAIN-KEYWORD,bytedance,PROXY-Gate
   #Wechat
   - DOMAIN-SUFFIX,weixin.qq.com,DIRECT
   - DOMAIN-SUFFIX,wechat.com,DIRECT
@@ -203,6 +251,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,wxapp.qq.com,DIRECT
   - DOMAIN-SUFFIX,work.weixin.qq.com,DIRECT
   - DOMAIN-SUFFIX,res.wx.qq.com,DIRECT
+  - DOMAIN-KEYWORD,udp-over-tcp,DIRECT
   #Meituan
   - DOMAIN-SUFFIX,meituan.com,DIRECT
   - DOMAIN-SUFFIX,meituan.net,DIRECT
@@ -218,7 +267,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,kugoustore.com,DIRECT
   - DOMAIN-SUFFIX,kugouvoice.com,DIRECT
   - DOMAIN-SUFFIX,kugouyouth.com,DIRECT
-  #==================#
+  #=========End of custom rules=========#
 
   #Remote rule set
   - RULE-SET,Privacy,REJECT
@@ -227,7 +276,7 @@ rules: #!replace
   #Bottom-up strategy
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,DIRECT,no-resolve
-  - MATCH,Proxy-Gate
+  - MATCH,PROXY-Gate
 
 rule-providers: #!replace
   ChinaMax:
