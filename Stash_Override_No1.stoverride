@@ -36,7 +36,6 @@ dns: #!replace
     - 119.29.29.29
     - 2400:3200::1
 
-
   nameserver:
     - https://dns.cloudflare.com/dns-query
     - https://dns.google/dns-query
