@@ -3,7 +3,7 @@ category: Production
 
 desc: |-
   DNS｜Proxy Groups｜Rules
-  Version: 1.0｜2026-07-07
+  Version: 1.0｜2026-07
 
   Encrypted DNS:
    - DoH｜IPv6｜IPv4
