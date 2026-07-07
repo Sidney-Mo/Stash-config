@@ -190,6 +190,7 @@ rules: #!replace
   - DST-PORT,995,DIRECT
 
   #=========Custom rules=========#
+
   # Apple
   # Basic connection and time
   - DOMAIN,time.apple.com,DIRECT
@@ -219,7 +220,6 @@ rules: #!replace
   - IP-CIDR6,2403:300:a42::/48,PROXY-Gate,no-resolve
   - IP-CIDR6,2403:300:a51::/48,PROXY-Gate,no-resolve
   - IP-CIDR6,2a01:b740:a42::/48,PROXY-Gate,no-resolve
-
   # App Store / iTunes
   - DOMAIN,itunes.apple.com,PROXY-Gate
   - DOMAIN-SUFFIX,apps.apple.com,PROXY-Gate
@@ -287,6 +287,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,kugoustore.com,DIRECT
   - DOMAIN-SUFFIX,kugouvoice.com,DIRECT
   - DOMAIN-SUFFIX,kugouyouth.com,DIRECT
+
   #=========End of custom rules=========#
 
   #Remote rule set
