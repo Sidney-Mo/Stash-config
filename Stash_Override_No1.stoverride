@@ -130,7 +130,7 @@ proxy-groups: #!replace
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png
     filter: '(?i)(\[US\]|^US$|USA|United States|\bUS\b|美国)'
     url: http://www.gstatic.com/generate_204
-    interval: 300
+    interval: 600
     tolerance: 50
 
   - name: 🇸🇬 SG-Auto
@@ -139,7 +139,7 @@ proxy-groups: #!replace
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png
     filter: '(?i)(\[SG\]|^SG$|Singapore|\bSG\b|新加坡|狮城)'
     url: http://www.gstatic.com/generate_204
-    interval: 300
+    interval: 600
     tolerance: 50
 
   - name: 🇭🇰 HK-Auto
@@ -148,7 +148,7 @@ proxy-groups: #!replace
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png
     filter: '(?i)(\[HK\]|^HK$|Hong Kong|\bHK\b|香港|🇨🇳香港)'
     url: http://www.gstatic.com/generate_204
-    interval: 300
+    interval: 600
     tolerance: 50
 
   - name: 🇯🇵 JP-Auto
@@ -157,7 +157,7 @@ proxy-groups: #!replace
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png
     filter: '(?i)(\[JP\]|^JP$|Japan|\bJP\b|日本|东京|大阪|🇯🇵日本)'
     url: http://www.gstatic.com/generate_204
-    interval: 300
+    interval: 600
     tolerance: 50
 
 rules: #!replace
