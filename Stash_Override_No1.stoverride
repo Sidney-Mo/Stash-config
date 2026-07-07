@@ -296,18 +296,18 @@ rule-providers: #!replace
 
   BanAD:
     behavior: classical
-    format: text
+    format: yaml
     interval: 86400
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/BanAD.yaml
 
   BanProgramAD:
     behavior: classical
-    format: text
+    format: yaml
     interval: 86400
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/BanProgramAD.yaml
 
   BanEasyList:
     behavior: classical
-    format: text
+    format: yaml
     interval: 86400
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanEasyList.list
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/BanEasyList.yaml
