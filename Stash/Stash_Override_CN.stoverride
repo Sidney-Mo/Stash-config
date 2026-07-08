@@ -25,7 +25,7 @@ desc: |-
   
   ⚡ 分流与兜底:
    - 规则分流：针对全球主流 AI 软件、谷歌、YouTube、Telegram 及网页版 OneDrive 进行了专项代理优化。  
-     命中 ChinaMax中国大陆规则集 的域名将默认直连。
+             命中 ChinaMax中国大陆规则集 的域名将默认直连。
    - 兜底策略：所有未命中规则的剩余流量，默认交由你在 PROXY-Gate 大组中所选的分组或节点来处理。
 
 #!override
