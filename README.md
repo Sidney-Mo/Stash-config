@@ -16,7 +16,7 @@ Personal repository for network proxy configuration files and rulesets.
   * `Stash_Override_RU.stoverride`: Custom override configuration file specialized and optimized for the network environment in Russia.
   * `Stash_Override_IR.stoverride`: Custom override configuration file specialized and optimized for the network environment in Iran.
 ## Private customized files
-    (Please do not use the following files. This is a customized version)
+  (Please do not use the following files. This is a customized version)
   * `Stash_Override_No1.stoverride`: Primary override configuration file, optimized for daily use.
   * `Stash_Override_No2.stoverride`: Secondary override configuration file, designated for poor network conditions.
   * `Stash_Override_Test.stoverride`: Testing configuration file, utilized for ongoing iterations, rule debugging, and network testing.
