@@ -272,6 +272,8 @@ rules: #!replace
   # ========= End of custom rules =========
 
   # Remote rule sets (Global Ad-blocking & Privacy)
+  - RULE-SET,IranMax,DIRECT
+  - RULE-SET,IranIP,DIRECT,no-resolve
   - RULE-SET,AdvertisingLite,REJECT
   - RULE-SET,Privacy,REJECT
 
@@ -281,6 +283,19 @@ rules: #!replace
   - MATCH,IR-Gate # 绝大部分未匹配流量默认全部出海
 
 rule-providers: #!replace
+
+  IranIP:
+    behavior: ipcidr
+    format: text
+    interval: 86400
+    url: https://raw.githubusercontent.com/vfarid/iran-ip-cidr/main/iran_ip_cidr.txt
+
+  IranMax:
+    behavior: domain
+    format: text
+    interval: 86400
+    url: https://raw.githubusercontent.com/bootmortis/iran-hosted-domains/master/String.txt
+
   AdvertisingLite:
     behavior: domain
     format: yaml
