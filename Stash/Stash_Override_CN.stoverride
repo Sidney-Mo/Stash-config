@@ -6,15 +6,14 @@ Name: Stash Core Override
 category: Active
 
 desc: |-
-  [English]
   DNS | Proxy Groups | Rules
   Version: 1.4 | 2026-07-08
   Encrypted DNS: DoH(DoT) | IPv6 | IPv4
   Policy Groups: PROXY-Gate {Global/US/SG/HK/JP/TW/EU}
   Rules: Customized AI, Google, YouTube, Telegram & OneDrive
   MATCH -> PROXY-Gate (Default Fallback)
-  
   [中文说明]
+  [适用于中国大陆地区用户在iPhone/iPad的Stash App上使用]
   覆写配置（包含 DNS、策略组与规则分流）
   版本: 1.4 | 2026-07-08
   加密 DNS: 支持分流、IPv4/IPv6、DoH 与 DoT 混合解析
