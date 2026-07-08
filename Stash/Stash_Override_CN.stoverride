@@ -2,10 +2,6 @@ Name: Stash CN Override
 category: Active
 
 desc: |-
-Name: Stash Core Override
-category: Active
-
-desc: |-
   [English]
   DNS | Proxy Groups | Rules
   Version: 1.4 | 2026-07-08
@@ -20,8 +16,8 @@ desc: |-
   📦 核心策略组说明:
    - [PROXY-Gate 大组]：包含 Global、美国、新加坡、香港、日本、台湾、欧洲等分组。
    - [自动测速小组]：美国、新加坡、香港、日本、台湾小组均支持“自动测速并自动选择最优节点”。
-     💡 使用提示：在 PROXY-Gate 大组中勾选对应的地区小组即可，无需再去小组内部手动挑选具体节点。
-   - [欧洲特定小组]：由于多数机场的欧洲节点较少，该组被设计为“自动测速、手动选择”模式，需自行根据延迟高低点击切换。
+     💡 使用提示：在 PROXY-Gate 主控制组中勾选对应的地区小组即可，无需再去小组内部手动挑选具体节点。
+   - [欧洲地区组]：由于多数情况下欧洲节点较少，该组被设计为“自动测速、手动选择”模式。根据需要自行选择欧洲地区组里的4个国家组即可。
   
   ⚡ 分流与兜底:
    - 规则分流：针对全球主流 AI 软件、谷歌、YouTube、Telegram 及网页版 OneDrive 进行了专项代理优化。  
@@ -140,7 +136,8 @@ profile: #!replace
 # 策略组配置 (Proxy Groups)                          #
 #---------------------------------------------------#
 proxy-groups: #!replace
-  # 主控制网关组（核心分流默认由此策略组统一调度）
+  # 主控制组（核心分流默认由此策略组统一调度）  
+  # 主控制住包含所有地区组以及全节点组
   - name: PROXY-Gate
     type: select
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Final.png
@@ -204,7 +201,7 @@ proxy-groups: #!replace
     interval: 600
     tolerance: 50
 
-  # 欧洲组：大组手动选择国家，国家内部自动测速
+  # 欧洲组：本组需组手动选择国家组，国家组内部自动测速，无需选择具体节点。
   - name: 🇪🇺 EU-Manual
     type: select
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/European_Union.png
@@ -323,7 +320,7 @@ rules: #!replace
 
   # ========= End of custom rules =========
 
-  # Remote rule sets (Ad-blocking & Privacy)
+  # Remote rule sets
   - RULE-SET,AdvertisingLite,REJECT
   - RULE-SET,Privacy,REJECT
   - RULE-SET,ACL4SSR_BanAD,REJECT
@@ -336,6 +333,7 @@ rules: #!replace
   - MATCH,PROXY-Gate
 
 rule-providers: #!replace
+
   AdvertisingLite:
     behavior: domain
     format: yaml
