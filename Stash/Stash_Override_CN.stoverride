@@ -144,18 +144,28 @@ proxy-groups: #!replace
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Final.png
     proxies:
       - 🌐 Global-Proxy  # 默认全局代理（包含所有节点）
+      - 🇪🇺 EU-Manual     # 欧洲区域手动切换（英/德/法/俄）
       - 🇺🇸 US-Auto       # 美国节点自动测速
       - 🇸🇬 SG-Auto       # 新加坡节点自动测速
       - 🇭🇰 HK-Auto       # 香港节点自动测速
       - 🇯🇵 JP-Auto       # 日本节点自动测速
       - 🇹🇼 TW-Auto       # 台湾节点自动测速
-      - 🇪🇺 EU-Manual     # 欧洲区域手动切换（英/德/法/俄）
       - DIRECT            # 直连
 
   - name: 🌐 Global-Proxy
     type: select
     include-all: true
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png
+
+  # 欧洲组：本组需组手动选择国家组，国家组内部自动测速，无需选择具体节点。
+  - name: 🇪🇺 EU-Manual
+    type: select
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/European_Union.png
+    proxies:
+      - 🇬🇧 UK-Auto
+      - 🇩🇪 DE-Auto
+      - 🇫🇷 FR-Auto
+      - 🇷🇺 RU-Auto
 
   - name: 🇺🇸 US-Auto
     type: url-test
@@ -201,16 +211,6 @@ proxy-groups: #!replace
     url: http://www.gstatic.com/generate_204
     interval: 600
     tolerance: 50
-
-  # 欧洲组：本组需组手动选择国家组，国家组内部自动测速，无需选择具体节点。
-  - name: 🇪🇺 EU-Manual
-    type: select
-    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/European_Union.png
-    proxies:
-      - 🇬🇧 UK-Auto
-      - 🇩🇪 DE-Auto
-      - 🇫🇷 FR-Auto
-      - 🇷🇺 RU-Auto
 
   - name: 🇬🇧 UK-Auto
     type: url-test
