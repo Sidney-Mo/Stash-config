@@ -3,7 +3,7 @@ category: Active
 
 desc: |-
   DNS｜Proxy Groups｜Rules
-  Version: 1.2｜2026-07-10
+  Version: 1.9｜2026-07-11
   Encrypted DNS:
    - DoT｜IPv6｜IPv4
   Policy Groups:
