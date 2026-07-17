@@ -1,6 +1,37 @@
 name: Stash Beta Override
 category: Beta
 
+desc: |-
+  DNS｜Proxy Groups｜Rules
+  Version: 2.0｜2026-07-17
+  Encrypted DNS:
+   - DoH｜IPv6｜IPv4
+  Policy Groups:
+   - PROXY-Gate｛Custom/US/SG/HK/TW/KR/JP/CA/EUR(UK-DE-FR-RU-IT-NL)}
+  Rules:
+   - Customize｜CN
+   - MATCH -> PROXY-Gate (Default Fallback)
+
+#!override
+
+mixed-port: 7890
+allow-lan: true
+bind-address: '*'
+mode: rule
+log-level: info
+external-controller: ':9090'
+unified-delay: true
+tcp-concurrent: true
+
+#===C30===#
+tun: #!replace
+  enable: true
+  stack: gvisor
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+
 dns: #!replace
   enable: true
   respect-rules: true
@@ -10,51 +41,41 @@ dns: #!replace
   fake-ip-range: 198.18.0.1/16
 
   default-nameserver:
-    - 8.8.8.8
     - 223.5.5.5
     - 119.29.29.29
-    - system
+    - 2400:3200::1
 
   nameserver:
-    - https://8.8.8.8/dns-query
-    - https://1.1.1.1/dns-query
-    - https://9.9.9.9/dns-query
-    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+    - https://dns.cloudflare.com/dns-query
+    - https://dns.google/dns-query
+    - https://dns.quad9.net/dns-query
+
+  proxy-server-nameserver:
+    - tls://1.1.1.1:853
+    - tls://8.8.8.8:853
+    - tls://9.9.9.9:853
 
   direct-nameserver:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
 
   nameserver-policy:
-    '+.t11-a.app': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
-    'dns.cloudflare.com': [1.1.1.1, 1.0.0.1]
-    'dns.google': [8.8.8.8, 8.8.4.4]
-    'dns.quad9.net': [9.9.9.9, 149.112.112.112]
-    'dns.alidns.com': [223.5.5.5, 223.6.6.6]
-    'doh.pub': [1.12.12.12, 120.53.53.53]
-    #WeChat
-    '+.weixin.com': [https://dns.alidns.com/dns-query]
-    '+.wechat.com': [https://dns.alidns.com/dns-query]
-    '+.qq.com': [https://dns.alidns.com/dns-query]
-    '+.tencent.com': [https://dns.alidns.com/dns-query]
-    '+.qpic.cn': [https://dns.alidns.com/dns-query]
-    '+.wx.qq.com': [https://dns.alidns.com/dns-query]
-    '+.wxapp.qq.com': [https://dns.alidns.com/dns-query]
-    #MeiTuan
-    '+.meituan.com': [https://dns.alidns.com/dns-query]
-    '+.meituan.net': [https://dns.alidns.com/dns-query]
-    '+.sankuai.com': [https://dns.alidns.com/dns-query]
-    '+.meituanwaimai.com': [https://dns.alidns.com/dns-query]
-    '+.meituanzhongbao.com': [https://dns.alidns.com/dns-query]
-    #KuGou
-    '+.kugou.com': [https://dns.alidns.com/dns-query]
-    '+.kugou.net': [https://dns.alidns.com/dns-query]
-    '+.kgimg.com': [https://dns.alidns.com/dns-query]
-    '+.kglink.cn': [https://dns.alidns.com/dns-query]
-    '+.kugouaudio.com': [https://dns.alidns.com/dns-query]
-    '+.kugoustore.com': [https://dns.alidns.com/dns-query]
-    '+.kugouvoice.com': [https://dns.alidns.com/dns-query]
-    '+.kugouyouth.com': [https://dns.alidns.com/dns-query]
+    '+.ctcxianyu.com': ['https://38.76.213.238:8080/dns-query']
+    '+.525536.xyz': ['https://38.76.213.238:8080/dns-query']
+    'hk01a.t11-a.app': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
+    'hk02a.t11-a.app': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
+    'hk03a.t11-a.app': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
+    'hk04a.t11-a.app': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
+    'sg01a.t202511-n.icu': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
+    'sg02a.t202511-n.icu': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
+    'sg03a.t202511-n.icu': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
+    'sg04a.t202511-n.icu': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
+    'dns.cloudflare.com': ['1.1.1.1', '1.0.0.1']
+    'dns.google': ['8.8.8.8', '8.8.4.4']
+    'dns.quad9.net': ['9.9.9.9', '149.112.112.112']
+    'dns.alidns.com': ['223.5.5.5', '223.6.6.6']
+    'doh.pub': ['1.12.12.12', '120.53.53.53']
 
   fallback:
     - https://dns.cloudflare.com/dns-query
@@ -66,6 +87,8 @@ dns: #!replace
     geoip-code: CN
     ipcidr:
       - 240.0.0.0/4
+      - 127.0.0.0/8
+      - 0.0.0.0/32
 
   fake-ip-filter:
     - '*.lan'
@@ -90,97 +113,9 @@ profile: #!replace
   store-selected: true
   store-fake-ip: true
 
-
-proxies: #!replace
-    - { name: '剩余流量：228.63 GB', type: anytls, server: hk01a.t11-a.app, port: 35355, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '距离下次重置剩余：16 天', type: anytls, server: hk01a.t11-a.app, port: 35355, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: 套餐到期：2026-09-01, type: anytls, server: hk01a.t11-a.app, port: 35355, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong01-GPT优化', type: anytls, server: hk01a.t11-a.app, port: 35355, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong02-GPT优化', type: anytls, server: hk02a.t11-a.app, port: 35356, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong03-GPT优化', type: anytls, server: hk03a.t11-a.app, port: 35357, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong04-GPT优化', type: anytls, server: hk04a.t11-a.app, port: 35358, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong05-GPT优化', type: anytls, server: hk05a.t11-a.app, port: 35359, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong06-GPT优化', type: anytls, server: hk06a.t11-a.app, port: 35360, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong07-GPT优化', type: anytls, server: hk07a.t11-a.app, port: 35361, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong08-GPT优化', type: anytls, server: hk08a.t11-a.app, port: 35362, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong09-GPT优化', type: anytls, server: hk09a.t11-a.app, port: 35363, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong10-GPT优化', type: anytls, server: hk10a.t11-a.app, port: 35365, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong11-GPT优化', type: anytls, server: hk11a.t11-a.app, port: 35366, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong12-GPT优化', type: anytls, server: hk12a.t11-a.app, port: 35367, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong13-GPT优化', type: anytls, server: hk13a.t11-a.app, port: 35368, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong14-GPT优化', type: anytls, server: hk14a.t11-a.app, port: 35369, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong15-GPT优化', type: anytls, server: hk15a.t11-a.app, port: 35370, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong16-GPT优化', type: anytls, server: hk16a.t11-a.app, port: 35371, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong17-GPT优化', type: anytls, server: hk17a.t11-a.app, port: 35372, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong18-GPT优化', type: anytls, server: hk18a.t11-a.app, port: 35373, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong19-GPT优化', type: anytls, server: hk19a.t11-a.app, port: 35375, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇭🇰[HK]HongKong20-GPT优化', type: anytls, server: hk20a.t11-a.app, port: 35376, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore01', type: anytls, server: sg01a.t202511-n.icu, port: 27521, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore02', type: anytls, server: sg02a.t202511-n.icu, port: 27522, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore03', type: anytls, server: sg03a.t202511-n.icu, port: 27523, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore04', type: anytls, server: sg04a.t11-a.app, port: 27524, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore05', type: anytls, server: sg05a.t11-a.app, port: 27525, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore06', type: anytls, server: sg06a.t202511-n.icu, port: 27526, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore07', type: anytls, server: sg07a.t202511-n.icu, port: 27527, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore08', type: anytls, server: sg08a.t11-a.app, port: 27528, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore09', type: anytls, server: sg09a.t11-a.app, port: 27529, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore10', type: anytls, server: sg10a.t11-a.app, port: 27530, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore11', type: anytls, server: sg11a.t11-a.app, port: 27531, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore12', type: anytls, server: sg12a.t11-a.app, port: 27532, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore13', type: anytls, server: sg13a.t11-a.app, port: 27533, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore14', type: anytls, server: sg14a.t11-a.app, port: 27534, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇸🇬[SG]Singapore15', type: anytls, server: sg15a.t11-a.app, port: 27535, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇯🇵[JP]Tokyo01', type: anytls, server: jp01a.t11-a.app, port: 35551, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇯🇵[JP]Tokyo02', type: anytls, server: jp02a.t11-a.app, port: 35552, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇯🇵[JP]Tokyo03', type: anytls, server: jp03a.t202511-n.icu, port: 35553, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇯🇵[JP]Tokyo04', type: anytls, server: jp04a.t202511-n.icu, port: 35554, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇯🇵[JP]Tokyo05', type: anytls, server: jp05a.t202511-n.icu, port: 35555, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇯🇵[JP]Tokyo06', type: anytls, server: jp06a.t202511-n.icu, port: 35556, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇯🇵[JP]Tokyo07', type: anytls, server: jp07a.t11-a.app, port: 35557, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇯🇵[JP]Tokyo08', type: anytls, server: jp08a.t11-a.app, port: 35558, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇯🇵[JP]Tokyo09', type: anytls, server: jp09a.t11-a.app, port: 35559, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇯🇵[JP]Tokyo10', type: anytls, server: jp10a.t11-a.app, port: 35561, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]Los Angeles01-GPT优化', type: anytls, server: us01a.t11-a.app, port: 35660, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]Los Angeles02-GPT优化', type: anytls, server: us02a.t202511-n.icu, port: 35661, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]Los Angeles03-GPT优化', type: anytls, server: us03a.t202511-n.icu, port: 35663, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]Los Angeles04-GPT优化', type: anytls, server: us04a.t11-a.app, port: 35665, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]Santa Clara05-GPT优化', type: anytls, server: us05a.t11-a.app, port: 35666, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]Santa Clara06-GPT优化', type: anytls, server: us06a.t11-a.app, port: 35667, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]San Jose07-GPT优化', type: anytls, server: us07a.t11-a.app, port: 35668, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]San Jose08-GPT优化', type: anytls, server: us08a.t11-a.app, port: 35669, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]San Francisco09-GPT优化', type: anytls, server: us09a.t11-a.app, port: 35675, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]San Francisco10-GPT优化', type: anytls, server: us10a.t11-a.app, port: 35671, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]San Francisco11-GPT优化', type: anytls, server: us11a.t11-a.app, port: 35677, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇺🇸[US]San Francisco12-GPT优化', type: anytls, server: us12a.t11-a.app, port: 35673, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇹🇼[TW]TaiPei01-GPT优化', type: anytls, server: tw01a.t11-a.app, port: 33801, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇹🇼[TW]TaiPei02-GPT优化', type: anytls, server: tw02a.t11-a.app, port: 33802, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇹🇼[TW]TaiPei03-GPT优化', type: anytls, server: tw03a.t11-a.app, port: 33803, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇹🇼[TW]TaiPei04-GPT优化', type: anytls, server: tw04a.t11-a.app, port: 33804, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇹🇼[TW]TaiPei05-GPT优化', type: anytls, server: tw05a.t11-a.app, port: 33805, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇹🇼[TW]TaiPei06-GPT优化', type: anytls, server: tw06a.t11-a.app, port: 33806, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇫🇷[FR]法国-Paris01', type: anytls, server: fr01a.t202511-n.icu, port: 35801, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇫🇷[FR]法国-Paris02', type: anytls, server: fr02a.t202511-n.icu, port: 35802, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇬🇧[UK]英国Coventry01', type: anytls, server: uk01a.t11-a.app, port: 35803, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇬🇧[UK]英国Coventry02', type: anytls, server: uk02a.t11-a.app, port: 35804, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇩🇪[DE]德国-Frankfurt01', type: anytls, server: de01a.t11-a.app, port: 35805, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇩🇪[DE]德国-Frankfurt02', type: anytls, server: de02a.t11-a.app, port: 35806, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇰🇷[KR]首尔-Seoul', type: anytls, server: kr01a.t11-a.app, port: 35807, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇨🇦[CA]加拿大-Toronto', type: anytls, server: ca01a.t11-a.app, port: 35808, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇳🇱[NL]荷兰-Amsterdam', type: anytls, server: nl01a.t11-a.app, port: 35809, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇷🇺[RU]俄罗斯-Moscow', type: anytls, server: ru01a.t202511-n.icu, port: 35810, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇮🇳[IN]印度-bangalore', type: anytls, server: in01a.t202511-n.icu, port: 35812, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇹🇷[TR]土耳其-Istanbul', type: anytls, server: tr01a.t202511-n.icu, port: 35811, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇦🇺[AU]澳大利亚-Sydney', type: anytls, server: au01a.t202511-n.icu, port: 35813, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇻🇳[VN]越南-HoChiMinh', type: anytls, server: vn01a.t202511-n.icu, port: 35814, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇳🇬[NG]尼日利亚-Lagos', type: anytls, server: ng01a.t202511-n.icu, port: 35815, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇦🇷[AR]阿根廷-BuenosAires', type: anytls, server: ar01a.t202511-n.icu, port: 35816, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '🇲🇰[MK]马其顿-Macedonia', type: anytls, server: mk01a.t202511-n.icu, port: 35817, password: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, client-fingerprint: chrome, udp: true, alpn: [h2, http/1.1], sni: '', skip-cert-verify: false }
-    - { name: '[境外用户专用]GPT01', type: vless, server: hw01v.t11-a.app, port: 19279, uuid: 3ef99179-81f6-4b32-9b69-2fc806d95cd3, udp: true, flow: xtls-rprx-vision, tls: true, skip-cert-verify: false, client-fingerprint: chrome, servername: www.cloudflare.com, reality-opts: { public-key: 8_fdD3bAbJaIW_MAVe0bR3t6WrtXUnJc12m9KO03fzI, short-id: 78e9a0e9 } }
-proxy-groups:
-    - { name: TaiShan Net, type: select, proxies: [自动选择, 故障转移, '剩余流量：228.63 GB', '距离下次重置剩余：16 天', 套餐到期：2026-09-01, '🇭🇰[HK]HongKong01-GPT优化', '🇭🇰[HK]HongKong02-GPT优化', '🇭🇰[HK]HongKong03-GPT优化', '🇭🇰[HK]HongKong04-GPT优化', '🇭🇰[HK]HongKong05-GPT优化', '🇭🇰[HK]HongKong06-GPT优化', '🇭🇰[HK]HongKong07-GPT优化', '🇭🇰[HK]HongKong08-GPT优化', '🇭🇰[HK]HongKong09-GPT优化', '🇭🇰[HK]HongKong10-GPT优化', '🇭🇰[HK]HongKong11-GPT优化', '🇭🇰[HK]HongKong12-GPT优化', '🇭🇰[HK]HongKong13-GPT优化', '🇭🇰[HK]HongKong14-GPT优化', '🇭🇰[HK]HongKong15-GPT优化', '🇭🇰[HK]HongKong16-GPT优化', '🇭🇰[HK]HongKong17-GPT优化', '🇭🇰[HK]HongKong18-GPT优化', '🇭🇰[HK]HongKong19-GPT优化', '🇭🇰[HK]HongKong20-GPT优化', '🇸🇬[SG]Singapore01', '🇸🇬[SG]Singapore02', '🇸🇬[SG]Singapore03', '🇸🇬[SG]Singapore04', '🇸🇬[SG]Singapore05', '🇸🇬[SG]Singapore06', '🇸🇬[SG]Singapore07', '🇸🇬[SG]Singapore08', '🇸🇬[SG]Singapore09', '🇸🇬[SG]Singapore10', '🇸🇬[SG]Singapore11', '🇸🇬[SG]Singapore12', '🇸🇬[SG]Singapore13', '🇸🇬[SG]Singapore14', '🇸🇬[SG]Singapore15', '🇯🇵[JP]Tokyo01', '🇯🇵[JP]Tokyo02', '🇯🇵[JP]Tokyo03', '🇯🇵[JP]Tokyo04', '🇯🇵[JP]Tokyo05', '🇯🇵[JP]Tokyo06', '🇯🇵[JP]Tokyo07', '🇯🇵[JP]Tokyo08', '🇯🇵[JP]Tokyo09', '🇯🇵[JP]Tokyo10', '🇺🇸[US]Los Angeles01-GPT优化', '🇺🇸[US]Los Angeles02-GPT优化', '🇺🇸[US]Los Angeles03-GPT优化', '🇺🇸[US]Los Angeles04-GPT优化', '🇺🇸[US]Santa Clara05-GPT优化', '🇺🇸[US]Santa Clara06-GPT优化', '🇺🇸[US]San Jose07-GPT优化', '🇺🇸[US]San Jose08-GPT优化', '🇺🇸[US]San Francisco09-GPT优化', '🇺🇸[US]San Francisco10-GPT优化', '🇺🇸[US]San Francisco11-GPT优化', '🇺🇸[US]San Francisco12-GPT优化', '🇹🇼[TW]TaiPei01-GPT优化', '🇹🇼[TW]TaiPei02-GPT优化', '🇹🇼[TW]TaiPei03-GPT优化', '🇹🇼[TW]TaiPei04-GPT优化', '🇹🇼[TW]TaiPei05-GPT优化', '🇹🇼[TW]TaiPei06-GPT优化', '🇫🇷[FR]法国-Paris01', '🇫🇷[FR]法国-Paris02', '🇬🇧[UK]英国Coventry01', '🇬🇧[UK]英国Coventry02', '🇩🇪[DE]德国-Frankfurt01', '🇩🇪[DE]德国-Frankfurt02', '🇰🇷[KR]首尔-Seoul', '🇨🇦[CA]加拿大-Toronto', '🇳🇱[NL]荷兰-Amsterdam', '🇷🇺[RU]俄罗斯-Moscow', '🇮🇳[IN]印度-bangalore', '🇹🇷[TR]土耳其-Istanbul', '🇦🇺[AU]澳大利亚-Sydney', '🇻🇳[VN]越南-HoChiMinh', '🇳🇬[NG]尼日利亚-Lagos', '🇦🇷[AR]阿根廷-BuenosAires', '🇲🇰[MK]马其顿-Macedonia', '[境外用户专用]GPT01'] }
-    - { name: 自动选择, type: url-test, proxies: ['🇭🇰[HK]HongKong01-GPT优化', '🇭🇰[HK]HongKong02-GPT优化', '🇭🇰[HK]HongKong03-GPT优化', '🇭🇰[HK]HongKong04-GPT优化', '🇭🇰[HK]HongKong05-GPT优化', '🇭🇰[HK]HongKong06-GPT优化', '🇭🇰[HK]HongKong07-GPT优化', '🇭🇰[HK]HongKong08-GPT优化', '🇭🇰[HK]HongKong09-GPT优化', '🇭🇰[HK]HongKong10-GPT优化', '🇭🇰[HK]HongKong11-GPT优化', '🇭🇰[HK]HongKong12-GPT优化', '🇭🇰[HK]HongKong13-GPT优化', '🇭🇰[HK]HongKong14-GPT优化', '🇭🇰[HK]HongKong15-GPT优化', '🇭🇰[HK]HongKong16-GPT优化', '🇭🇰[HK]HongKong17-GPT优化', '🇭🇰[HK]HongKong18-GPT优化', '🇭🇰[HK]HongKong19-GPT优化', '🇭🇰[HK]HongKong20-GPT优化', '🇸🇬[SG]Singapore01', '🇸🇬[SG]Singapore02', '🇸🇬[SG]Singapore03', '🇸🇬[SG]Singapore04', '🇸🇬[SG]Singapore05', '🇸🇬[SG]Singapore06', '🇸🇬[SG]Singapore07', '🇸🇬[SG]Singapore08', '🇸🇬[SG]Singapore09', '🇸🇬[SG]Singapore10', '🇸🇬[SG]Singapore11', '🇸🇬[SG]Singapore12', '🇸🇬[SG]Singapore13', '🇸🇬[SG]Singapore14', '🇸🇬[SG]Singapore15', '🇯🇵[JP]Tokyo01', '🇯🇵[JP]Tokyo02', '🇯🇵[JP]Tokyo03', '🇯🇵[JP]Tokyo04', '🇯🇵[JP]Tokyo05', '🇯🇵[JP]Tokyo06', '🇯🇵[JP]Tokyo07', '🇯🇵[JP]Tokyo08', '🇯🇵[JP]Tokyo09', '🇯🇵[JP]Tokyo10', '🇺🇸[US]Los Angeles01-GPT优化', '🇺🇸[US]Los Angeles02-GPT优化', '🇺🇸[US]Los Angeles03-GPT优化', '🇺🇸[US]Los Angeles04-GPT优化', '🇺🇸[US]Santa Clara05-GPT优化', '🇺🇸[US]Santa Clara06-GPT优化', '🇺🇸[US]San Jose07-GPT优化', '🇺🇸[US]San Jose08-GPT优化', '🇺🇸[US]San Francisco09-GPT优化', '🇺🇸[US]San Francisco10-GPT优化', '🇺🇸[US]San Francisco11-GPT优化', '🇺🇸[US]San Francisco12-GPT优化', '🇹🇼[TW]TaiPei01-GPT优化', '🇹🇼[TW]TaiPei02-GPT优化', '🇹🇼[TW]TaiPei03-GPT优化', '🇹🇼[TW]TaiPei04-GPT优化', '🇹🇼[TW]TaiPei05-GPT优化', '🇹🇼[TW]TaiPei06-GPT优化', '🇫🇷[FR]法国-Paris01', '🇫🇷[FR]法国-Paris02', '🇬🇧[UK]英国Coventry01', '🇬🇧[UK]英国Coventry02', '🇩🇪[DE]德国-Frankfurt01', '🇩🇪[DE]德国-Frankfurt02'], url: 'http://www.gstatic.com/generate_204', interval: 86400 }
-    - { name: 故障转移, type: fallback, proxies: ['剩余流量：228.63 GB', '距离下次重置剩余：16 天', 套餐到期：2026-09-01, '🇭🇰[HK]HongKong01-GPT优化', '🇭🇰[HK]HongKong02-GPT优化', '🇭🇰[HK]HongKong03-GPT优化', '🇭🇰[HK]HongKong04-GPT优化', '🇭🇰[HK]HongKong05-GPT优化', '🇭🇰[HK]HongKong06-GPT优化', '🇭🇰[HK]HongKong07-GPT优化', '🇭🇰[HK]HongKong08-GPT优化', '🇭🇰[HK]HongKong09-GPT优化', '🇭🇰[HK]HongKong10-GPT优化', '🇭🇰[HK]HongKong11-GPT优化', '🇭🇰[HK]HongKong12-GPT优化', '🇭🇰[HK]HongKong13-GPT优化', '🇭🇰[HK]HongKong14-GPT优化', '🇭🇰[HK]HongKong15-GPT优化', '🇭🇰[HK]HongKong16-GPT优化', '🇭🇰[HK]HongKong17-GPT优化', '🇭🇰[HK]HongKong18-GPT优化', '🇭🇰[HK]HongKong19-GPT优化', '🇭🇰[HK]HongKong20-GPT优化', '🇸🇬[SG]Singapore01', '🇸🇬[SG]Singapore02', '🇸🇬[SG]Singapore03', '🇸🇬[SG]Singapore04', '🇸🇬[SG]Singapore05', '🇸🇬[SG]Singapore06', '🇸🇬[SG]Singapore07', '🇸🇬[SG]Singapore08', '🇸🇬[SG]Singapore09', '🇸🇬[SG]Singapore10', '🇸🇬[SG]Singapore11', '🇸🇬[SG]Singapore12', '🇸🇬[SG]Singapore13', '🇸🇬[SG]Singapore14', '🇸🇬[SG]Singapore15', '🇯🇵[JP]Tokyo01', '🇯🇵[JP]Tokyo02', '🇯🇵[JP]Tokyo03', '🇯🇵[JP]Tokyo04', '🇯🇵[JP]Tokyo05', '🇯🇵[JP]Tokyo06', '🇯🇵[JP]Tokyo07', '🇯🇵[JP]Tokyo08', '🇯🇵[JP]Tokyo09', '🇯🇵[JP]Tokyo10', '🇺🇸[US]Los Angeles01-GPT优化', '🇺🇸[US]Los Angeles02-GPT优化', '🇺🇸[US]Los Angeles03-GPT优化', '🇺🇸[US]Los Angeles04-GPT优化', '🇺🇸[US]Santa Clara05-GPT优化', '🇺🇸[US]Santa Clara06-GPT优化', '🇺🇸[US]San Jose07-GPT优化', '🇺🇸[US]San Jose08-GPT优化', '🇺🇸[US]San Francisco09-GPT优化', '🇺🇸[US]San Francisco10-GPT优化', '🇺🇸[US]San Francisco11-GPT优化', '🇺🇸[US]San Francisco12-GPT优化', '🇹🇼[TW]TaiPei01-GPT优化', '🇹🇼[TW]TaiPei02-GPT优化', '🇹🇼[TW]TaiPei03-GPT优化', '🇹🇼[TW]TaiPei04-GPT优化', '🇹🇼[TW]TaiPei05-GPT优化', '🇹🇼[TW]TaiPei06-GPT优化', '🇫🇷[FR]法国-Paris01', '🇫🇷[FR]法国-Paris02', '🇬🇧[UK]英国Coventry01', '🇬🇧[UK]英国Coventry02', '🇩🇪[DE]德国-Frankfurt01', '🇩🇪[DE]德国-Frankfurt02', '🇰🇷[KR]首尔-Seoul', '🇨🇦[CA]加拿大-Toronto', '🇳🇱[NL]荷兰-Amsterdam', '🇷🇺[RU]俄罗斯-Moscow', '🇮🇳[IN]印度-bangalore', '🇹🇷[TR]土耳其-Istanbul', '🇦🇺[AU]澳大利亚-Sydney', '🇻🇳[VN]越南-HoChiMinh', '🇳🇬[NG]尼日利亚-Lagos', '🇦🇷[AR]阿根廷-BuenosAires', '🇲🇰[MK]马其顿-Macedonia', '[境外用户专用]GPT01'], url: 'http://www.gstatic.com/generate_204', interval: 7200 }
-
+#-------------------#
+# proxies: #
+#-------------------#
 proxy-groups: #!replace
   - name: PROXY-Gate
     type: select
@@ -192,6 +127,8 @@ proxy-groups: #!replace
       - 🇸🇬 SG-Auto
       - 🇭🇰 HK-Auto
       - 🇯🇵 JP-Auto
+      - 🇰🇷 KR-Auto
+      - 🇨🇦 CA-Auto
       - DIRECT
 
   - name: 🌎 Custom-Manual
@@ -207,6 +144,8 @@ proxy-groups: #!replace
       - 🇩🇪 DE-Auto
       - 🇫🇷 FR-Auto
       - 🇷🇺 RU-Auto
+      - 🇮🇹 IT-Auto
+      - 🇳🇱 NL-Auto
 
   - name: 🇺🇸 US-Auto
     type: url-test
@@ -215,6 +154,7 @@ proxy-groups: #!replace
     filter: '(?i)(\[US\]|^US$|USA|United States|\bUS\b|美国)'
     url: http://www.gstatic.com/generate_204
     interval: 600
+    timeout: 15
     tolerance: 50
 
   - name: 🇸🇬 SG-Auto
@@ -224,6 +164,7 @@ proxy-groups: #!replace
     filter: '(?i)(\[SG\]|^SG$|Singapore|\bSG\b|新加坡|狮城)'
     url: http://www.gstatic.com/generate_204
     interval: 600
+    timeout: 15
     tolerance: 50
 
   - name: 🇭🇰 HK-Auto
@@ -232,7 +173,8 @@ proxy-groups: #!replace
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png
     filter: '(?i)(\[HK\]|^HK$|Hong Kong|\bHK\b|香港|🇨🇳香港)'
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 900
+    timeout: 15
     tolerance: 50
 
   - name: 🇯🇵 JP-Auto
@@ -241,43 +183,89 @@ proxy-groups: #!replace
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png
     filter: '(?i)(\[JP\]|^JP$|Japan|\bJP\b|日本|东京|大阪|🇯🇵日本)'
     url: http://www.gstatic.com/generate_204
-    interval: 600
+    interval: 900
+    timeout: 15
     tolerance: 50
 
+  - name: 🇰🇷 KR-Auto
+    type: url-test
+    include-all: true
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Korea.png
+    filter: '(?i)(\[KR\]|^KR$|Korea|South Korea|\bKR\b|韩国|首尔|Seoul)'
+    url: http://www.gstatic.com/generate_204
+    interval: 900
+    timeout: 15
+    tolerance: 50
+
+  - name: 🇨🇦 CA-Auto
+    type: url-test
+    include-all: true
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Canada.png
+    filter: '(?i)(\[CA\]|^CA$|Canada|加拿大|Toronto|Vancouver|Montreal)'
+    url: http://www.gstatic.com/generate_204
+    interval: 900
+    timeout: 15
+    tolerance: 50
+
+  #EUR-Manual
   - name: 🇬🇧 UK-Auto
     type: url-test
     include-all: true
-    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_Kingdom.png
-    filter: '(?i)(\[UK\]|^UK$|UK|United Kingdom|Britain|\bUK\b|英国|伦敦)'
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Europe_Map.png
+    filter: '(?i)(?!.*Ukraine)(\[UK\]|^UK$|United Kingdom|Britain|\bUK\b|英国|伦敦)'
     url: http://www.gstatic.com/generate_204
-    interval: 900
+    interval: 1200
+    timeout: 15
     tolerance: 50
 
   - name: 🇩🇪 DE-Auto
     type: url-test
     include-all: true
-    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Germany.png
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Europe_Map.png
     filter: '(?i)(\[DE\]|^DE$|Germany|Deutschland|\bDE\b|德国|法兰克福)'
     url: http://www.gstatic.com/generate_204
-    interval: 900
+    interval: 1200
+    timeout: 15
     tolerance: 50
 
   - name: 🇫🇷 FR-Auto
     type: url-test
     include-all: true
-    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/France.png
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Europe_Map.png
     filter: '(?i)(\[FR\]|^FR$|France|\bFR\b|法国|巴黎)'
     url: http://www.gstatic.com/generate_204
-    interval: 900
+    interval: 1200
+    timeout: 15
     tolerance: 50
 
   - name: 🇷🇺 RU-Auto
     type: url-test
     include-all: true
-    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Russia.png
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Europe_Map.png
     filter: '(?i)(\[RU\]|^RU$|Russia|Russian|Federation|\bRU\b|俄罗斯|莫斯科|伯力)'
     url: http://www.gstatic.com/generate_204
-    interval: 900
+    interval: 1200
+    timeout: 15
+    tolerance: 50
+
+  - name: 🇮🇹 IT-Auto
+    type: url-test
+    include-all: true
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Europe_Map.png
+    filter: '(?i)(\[IT\]|^IT$|Italy|Italian|\bIT\b|意大利|米兰|罗马)'
+    url: http://www.gstatic.com/generate_204
+    interval: 1200
+    timeout: 15
+    tolerance: 50
+
+  - name: 🇳🇱 NL-Auto
+    type: url-test
+    include-all: true
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Europe_Map.png
+    filter: '(?i)(\[NL\]|^NL$|Netherlands|Holland|\bNL\b|荷兰|阿姆斯特丹|Amsterdam)'
+    url: http://www.gstatic.com/generate_204
+    interval: 1200
+    timeout: 15
     tolerance: 50
 
 rules: #!replace
@@ -287,7 +275,6 @@ rules: #!replace
   - DOMAIN-SUFFIX,githubusercontent.com,PROXY-Gate
   - DOMAIN-SUFFIX,githubassets.com,PROXY-Gate
   - DOMAIN-SUFFIX,raw.githubusercontent.com,PROXY-Gate
-
   #Local area network and e-mail
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
@@ -298,26 +285,32 @@ rules: #!replace
   - DST-PORT,587,DIRECT
   - DST-PORT,993,DIRECT
   - DST-PORT,995,DIRECT
+  #Remote rule set
+  - RULE-SET,AdvertisingLite,REJECT
+  - RULE-SET,Privacy,REJECT
+  - RULE-SET,ACL4SSR_BanAD,REJECT
+  - RULE-SET,ACL4SSR_BanProgramAD,REJECT
 
   #=========Custom rules=========#
 
   # Apple
-  # Basic connection and time
+  # (Basic connection and time)
   - DOMAIN,time.apple.com,DIRECT
   - DOMAIN,captive.apple.com,DIRECT
-  # Media and content
+  # (Media and content)
   - DOMAIN-SUFFIX,mzstatic.com,PROXY-Gate
   - DOMAIN-SUFFIX,aaplimg.com,PROXY-Gate
   - DOMAIN-SUFFIX,music.apple.com,DIRECT
-  # Storage and backup
+  # (Storage and backup)
+  - DOMAIN-SUFFIX,icloud.com.cn,DIRECT
   - DOMAIN-SUFFIX,icloud.com,DIRECT
   - DOMAIN-SUFFIX,icloud-content.com,DIRECT
   - DOMAIN-SUFFIX,apple-cloudkit.com,DIRECT
   - DOMAIN,gateway.icloud.com,DIRECT
-  # Download and update
+  # (Download and update)
   - DOMAIN-SUFFIX,swcdn.apple.com,PROXY-Gate
   - DOMAIN-SUFFIX,updates.cdn-apple.com,PROXY-Gate
-  # Push service
+  # (Push service)
   - DOMAIN-SUFFIX,push.apple.com,PROXY-Gate
   - DOMAIN-SUFFIX,push-apple.com.akadns.net,PROXY-Gate
   - DOMAIN-KEYWORD,apple.com.edgekey.net,PROXY-Gate
@@ -330,7 +323,7 @@ rules: #!replace
   - IP-CIDR6,2403:300:a42::/48,PROXY-Gate,no-resolve
   - IP-CIDR6,2403:300:a51::/48,PROXY-Gate,no-resolve
   - IP-CIDR6,2a01:b740:a42::/48,PROXY-Gate,no-resolve
-  # App Store / iTunes
+  # (App Store / iTunes)
   - DOMAIN,itunes.apple.com,PROXY-Gate
   - DOMAIN-SUFFIX,apps.apple.com,PROXY-Gate
   - DOMAIN-SUFFIX,itunes.apple.com,PROXY-Gate
@@ -338,7 +331,7 @@ rules: #!replace
   - DOMAIN-KEYWORD,buy.itunes,PROXY-Gate
   - DOMAIN,bag.itunes.apple.com,PROXY-Gate
   - DOMAIN,storekit.itunes.apple.com,PROXY-Gate
-  #Microsoft
+  # Microsoft
   - DOMAIN-KEYWORD,copilot,PROXY-Gate
   - DOMAIN-SUFFIX,bing.com,PROXY-Gate
   - DOMAIN-SUFFIX,bingapis.com,PROXY-Gate
@@ -367,14 +360,14 @@ rules: #!replace
   - DOMAIN-SUFFIX,outlook.com,DIRECT
   - DOMAIN-SUFFIX,office.com,DIRECT
   - DOMAIN-SUFFIX,msauth.net,DIRECT
-  #Tiktok
+  # Tiktok
   - DOMAIN-KEYWORD,snssdk,PROXY-Gate
   - DOMAIN-KEYWORD,amemv,PROXY-Gate
   - DOMAIN-KEYWORD,douyin,PROXY-Gate
   - DOMAIN-KEYWORD,byteimg,PROXY-Gate
   - DOMAIN-KEYWORD,pstatp,PROXY-Gate
   - DOMAIN-KEYWORD,bytedance,PROXY-Gate
-  #Wechat
+  # Wechat
   - DOMAIN-SUFFIX,weixin.qq.com,DIRECT
   - DOMAIN-SUFFIX,wechat.com,DIRECT
   - DOMAIN-SUFFIX,wx.qq.com,DIRECT
@@ -382,13 +375,20 @@ rules: #!replace
   - DOMAIN-SUFFIX,work.weixin.qq.com,DIRECT
   - DOMAIN-SUFFIX,res.wx.qq.com,DIRECT
   - DOMAIN-KEYWORD,udp-over-tcp,DIRECT
-  #Meituan
+  # Meituan
   - DOMAIN-SUFFIX,meituan.com,DIRECT
   - DOMAIN-SUFFIX,meituan.net,DIRECT
   - DOMAIN-SUFFIX,sankuai.com,DIRECT
   - DOMAIN-SUFFIX,meituanwaimai.com,DIRECT
   - DOMAIN-SUFFIX,meituanzhongbao.com,DIRECT
-  #Kugou
+  - DOMAIN-SUFFIX,meituanpay.com,DIRECT
+  - DOMAIN-SUFFIX,meituanmail.com,DIRECT
+  - DOMAIN-SUFFIX,meituanimg.com,DIRECT
+  - DOMAIN-SUFFIX,mtcdn.cn,DIRECT
+  - DOMAIN-SUFFIX,dpfile.com,DIRECT
+  - DOMAIN-SUFFIX,dianping.com,DIRECT
+  - DOMAIN-SUFFIX,dianping.cn,DIRECT
+  # Kugou
   - DOMAIN-SUFFIX,kugou.com,DIRECT
   - DOMAIN-SUFFIX,kugou.net,DIRECT
   - DOMAIN-SUFFIX,kgimg.com,DIRECT
@@ -397,17 +397,65 @@ rules: #!replace
   - DOMAIN-SUFFIX,kugoustore.com,DIRECT
   - DOMAIN-SUFFIX,kugouvoice.com,DIRECT
   - DOMAIN-SUFFIX,kugouyouth.com,DIRECT
-
+  # China Mobile
+  - DOMAIN-SUFFIX,10086.cn,DIRECT
+  - DOMAIN-SUFFIX,10099.com.cn,DIRECT
+  - DOMAIN-SUFFIX,cmpassport.com,DIRECT
+  - DOMAIN-SUFFIX,139.com,DIRECT
+  - DOMAIN-SUFFIX,and.10086.cn,DIRECT
+  - DOMAIN-SUFFIX,andlink.cn,DIRECT
+  - DOMAIN-SUFFIX,andlink.com,DIRECT
+  # China Telecom
+  - DOMAIN-SUFFIX,189.cn,DIRECT
+  - DOMAIN-SUFFIX,chinatelecom.com.cn,DIRECT
+  - DOMAIN-SUFFIX,21cn.com,DIRECT
+  # Xiaomi Home
+  - DOMAIN-SUFFIX,xiaomi.com,DIRECT
+  - DOMAIN-SUFFIX,io.mi.com,DIRECT
+  - DOMAIN-SUFFIX,miot.com,DIRECT
+  - DOMAIN-SUFFIX,miot-spec.com,DIRECT
+  # Midea Home
+  - DOMAIN-SUFFIX,midea.com,DIRECT
+  - DOMAIN-SUFFIX,smartmidea.net,DIRECT
+  # Baidu
+  - DOMAIN-SUFFIX,baidu.com,DIRECT
+  - DOMAIN-SUFFIX,bdstatic.com,DIRECT
+  - DOMAIN-SUFFIX,bcebos.com,DIRECT
+  # NetEase Mail
+  - DOMAIN-SUFFIX,126.com,DIRECT
+  - DOMAIN-SUFFIX,163.com,DIRECT
+  - DOMAIN-SUFFIX,netease.com,DIRECT
+  # UnionPay
+  - DOMAIN-SUFFIX,95516.com,DIRECT
+  - DOMAIN-SUFFIX,unionpay.com,DIRECT
+  - DOMAIN-SUFFIX,unionpayintl.com,DIRECT
+  # Alibaba Ecosystem
+  - DOMAIN-SUFFIX,taobao.com,DIRECT
+  - DOMAIN-SUFFIX,tmall.com,DIRECT
+  - DOMAIN-SUFFIX,alibaba.com,DIRECT
+  - DOMAIN-SUFFIX,alibabacloud.com,DIRECT
+  - DOMAIN-SUFFIX,aliyun.com,DIRECT
+  - DOMAIN-SUFFIX,aliyuncs.com,DIRECT
+  - DOMAIN-SUFFIX,aliyundrive.com,DIRECT
+  - DOMAIN-SUFFIX,alipan.com,DIRECT
+  - DOMAIN-SUFFIX,alicdn.com,DIRECT
+  - DOMAIN-SUFFIX,aliapp.org,DIRECT
+  - DOMAIN-SUFFIX,alipay.com,DIRECT
+  - DOMAIN-SUFFIX,alipayobjects.com,DIRECT
+  - DOMAIN-SUFFIX,antgroup.com,DIRECT
+  - DOMAIN-SUFFIX,ele.me,DIRECT
+  - DOMAIN-SUFFIX,eleme.cn,DIRECT
+  - DOMAIN-SUFFIX,eleme.io,DIRECT
+  - DOMAIN-SUFFIX,eleme.net,DIRECT
+  # (Taobao Flash Sale / Local Services)
+  - DOMAIN-SUFFIX,taobaocdn.com,DIRECT
+  - DOMAIN-SUFFIX,tbcdn.cn,DIRECT
+  - DOMAIN-SUFFIX,mmstat.com,DIRECT
+  - DOMAIN-SUFFIX,umeng.com,DIRECT
   #=========End of custom rules=========#
 
-  #Remote rule set
-  - RULE-SET,AdvertisingLite,REJECT
-  - RULE-SET,Privacy,REJECT
-  - RULE-SET,ACL4SSR_BanAD,REJECT
-  - RULE-SET,ACL4SSR_BanProgramAD,REJECT
-  - RULE-SET,ChinaMax,DIRECT
-
   #Bottom-up strategy
+  - RULE-SET,ChinaMax,DIRECT
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,DIRECT,no-resolve
   - MATCH,PROXY-Gate
