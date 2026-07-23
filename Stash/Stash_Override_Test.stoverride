@@ -52,6 +52,8 @@ dns: #!replace
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
 
+  direct-nameserver-follow-policy: true
+
   nameserver-policy:
     'dns.cloudflare.com': ['1.1.1.1', '1.0.0.1']
     'dns.google': ['8.8.8.8', '8.8.4.4']
