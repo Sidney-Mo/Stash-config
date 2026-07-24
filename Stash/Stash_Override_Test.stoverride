@@ -56,11 +56,6 @@ dns: #!replace
   direct-nameserver-follow-policy: true
 
   nameserver-policy:
-    'dns.cloudflare.com': ['1.1.1.1', '1.0.0.1']
-    'dns.google': ['8.8.8.8', '8.8.4.4']
-    'dns.quad9.net': ['9.9.9.9', '149.112.112.112']
-    'dns.alidns.com': ['223.5.5.5', '223.6.6.6']
-    'doh.pub': ['1.12.12.12', '120.53.53.53']
     '+.ctcxianyu.com': ['https://38.76.213.238:8080/dns-query']
     '+.525536.xyz': ['https://38.76.213.238:8080/dns-query']
     '+.t11-a.app': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
