@@ -58,8 +58,14 @@ dns: #!replace
   nameserver-policy:
     '+.ctcxianyu.com': ['https://38.76.213.238:8080/dns-query']
     '+.525536.xyz': ['https://38.76.213.238:8080/dns-query']
-    '+.t11-a.app': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
-    '+.t202511-n.icu': ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
+    '+.t11-a.app':
+      - tls://1.1.1.1:853
+      - tls://8.8.8.8:853
+      - tls://9.9.9.9:853
+    '+.t202511-n.icu':
+      - tls://1.1.1.1:853
+      - tls://8.8.8.8:853
+      - tls://9.9.9.9:853
     '+.163.com': ['https://dns.alidns.com/dns-query']
     '+.126.com': ['https://dns.alidns.com/dns-query']
     '+.126.net': ['https://dns.alidns.com/dns-query']
